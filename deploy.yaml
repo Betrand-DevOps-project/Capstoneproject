@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: falsk
+  name: mywelcomepage
   labels: 
-    app: flask
+    app: mywelcomepage
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: flask
+      app: mywelcomepage
   template:
     metadata:
       labels:
-        app: flask
+        app: mywelcomepage
     spec:
       containers:
-      - name: flask
-        image: 19841022/flask
+      - name: mywelcomepage
+        image: bndah/mywelcomepage
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
@@ -26,12 +26,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask
+  name: mywelcomepage
 spec:
   type: LoadBalancer
   ports:
     - protocol: TCP
       port: 4000
       targetPort: 5000
+      nodePort: 31000
   selector:
-    app: flask
+    app: mywelcomepage
