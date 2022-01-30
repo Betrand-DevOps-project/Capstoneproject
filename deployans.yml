@@ -1,9 +1,6 @@
 ---
 - name: create service for deployment
   hosts: all
-  #become: true
-  #user: ubuntu
-
   tasks:
   - name: create a service
     command: kubectl apply -f /home/ec2-user/dev.yaml
