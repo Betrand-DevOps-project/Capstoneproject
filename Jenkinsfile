@@ -1,7 +1,7 @@
 pipeline {
       agent any
       environment{
-         registry = "bndah/dev" 
+         registry = "bndah/mywelcomepage" 
          registryCredential = 'bndah' 
          dockerImage = '' 
       }
@@ -13,14 +13,15 @@ pipeline {
           }
           stage('Build Image') {
                steps {
-               sh "docker build -t bndah/mywelcomepage ."
+                   dockerImage = docker.build registry + ":$BUILD_NUMBER"
                }
          }
          stage('Push image') {
                steps {
-                docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push()
-                }
+                     docker.withRegistry( '', registryCredential ) {
+                       dockerImage.push()
+                     }
+               }     
          }
          stage('copy the files') {
                steps {
