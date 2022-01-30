@@ -1,10 +1,5 @@
 pipeline {
       agent any
-      environment{
-         registry = "bndah/mywelcomepage" 
-         registryCredential = 'bndah' 
-         dockerImage = '' 
-      }
           stages {
                stage('Clone Repository') {
                steps {
@@ -13,15 +8,13 @@ pipeline {
           }
           stage('Build Image') {
                steps {
-                   dockerImage = docker.build registry + ":$BUILD_NUMBER"
+               sh "docker build -t bndah/mywelcomepage ."
                }
          }
          stage('Push image') {
                steps {
-                     docker.withRegistry( '', registryCredential ) {
-                       dockerImage.push()
-                     }
-               }     
+               sh 'docker push bndah/mywelcomepage'
+               }
          }
          stage('copy the files') {
                steps {
@@ -31,8 +24,7 @@ pipeline {
          }       
          stage('ansible deploy') {
                steps {
-               sh 'ansible -m ping all'
-               sh 'ansible-playbook deployans.yml'
+               sh 'ansible-playbook ansi.yml'
                }
          }
          stage('Testing') {
@@ -42,3 +34,4 @@ pipeline {
          }
     }
 }
+
